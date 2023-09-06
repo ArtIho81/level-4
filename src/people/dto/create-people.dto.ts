@@ -1,4 +1,4 @@
-import { IsArray, IsEnum, IsNumber, IsNumberString, IsString } from 'class-validator';
+import { IsEnum, IsNumberString, IsString } from 'class-validator';
 import { E_PeopleGender } from '../people.enums';
 import { ApiProperty } from '@nestjs/swagger';
 
@@ -15,42 +15,47 @@ export class CreatePeopleDTO {
   @IsNumberString()
   readonly mass: string;
 
+  @ApiProperty({ example: 'brown', description: 'Hair color' })
   @IsString()
   readonly hair_color: string;
 
+  @ApiProperty({ example: 'yellow', description: 'Skin color' })
   @IsString()
   readonly skin_color: string;
 
+  @ApiProperty({ example: 'blue', description: 'Eyes color' })
   @IsString()
   readonly eye_color: string;
 
+  @ApiProperty({ example: '102BBY' })
   @IsString()
   readonly birth_year: string;
 
+  @ApiProperty({ example: 'male | female | hermafrodite | n/a' })
   @IsEnum(E_PeopleGender)
   readonly gender: string;
 
+  @ApiProperty({ example: 'Earth' })
   @IsString()
   readonly homeworld: string;
 
+  @ApiProperty({ example: '' })
   @IsString()
-  readonly films: string[];
+  readonly films: string;
 
-  @IsArray()
-  readonly species: string[];
-
-  @IsArray()
-  readonly vehicles: string[];
-
-  @IsArray()
-  readonly starships: string[];
-
+  @ApiProperty({ example: '' })
   @IsString()
-  readonly created: string;
+  readonly species: string;
 
+  @ApiProperty({ example: '' })
   @IsString()
-  readonly edited: string;
+  readonly vehicles: string;
 
+  @ApiProperty({ example: '' })
+  @IsString()
+  readonly starships: string;
+
+  @ApiProperty({ example: 'http://' })
   @IsString()
   readonly url: string;
 }
