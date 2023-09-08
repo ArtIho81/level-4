@@ -1,6 +1,7 @@
-import { IsEnum, IsNumberString, IsString } from 'class-validator';
+import { IsArray, IsEnum, IsNumberString, IsOptional, IsString } from 'class-validator';
 import { E_PeopleGender } from '../people.enums';
 import { ApiProperty } from '@nestjs/swagger';
+import { People_Images } from 'src/images/images.entity';
 
 export class CreatePeopleDTO {
   @ApiProperty({ example: 'John Doe', description: 'Person name' })

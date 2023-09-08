@@ -1,11 +1,9 @@
 import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { People_Images } from './images.entity';
+import { ImagesService } from './images.service';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([People_Images])]
+    providers: [ImagesService],
+    exports: [ImagesService]
 })
 export class ImagesModule {
-
-
 }

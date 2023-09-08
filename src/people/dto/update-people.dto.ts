@@ -10,6 +10,7 @@ import {
   IsString,
 } from 'class-validator';
 import { E_PeopleGender } from '../people.enums';
+import { People_Images } from 'src/images/images.entity';
 
 
 export class UpdatePeopleDTO extends PartialType(CreatePeopleDTO) {

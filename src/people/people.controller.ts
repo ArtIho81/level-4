@@ -8,6 +8,9 @@ import {
   Post,
   Query,
   HttpStatus,
+  ParseFilePipeBuilder,
+  UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
 import { PeopleService } from './people.service';
 import { CreatePeopleDTO } from './dto/create-people.dto';
@@ -18,10 +21,14 @@ import {
   ApiTags,
   ApiQuery,
   ApiParam,
+  ApiBody,
+  ApiConsumes,
 } from '@nestjs/swagger';
 import { ParamIdPipe } from 'src/people/pipes/param-id.pipe';
 import { QueryPagePipe } from 'src/people/pipes/query-page.pipe';
 import { People } from './people.entity';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { ImagesService } from 'src/images/images.service';
 
 @ApiTags('People')
 @Controller('people')
@@ -74,5 +81,44 @@ export class PeopleController {
   @Delete(':id')
   deleteById(@Param('id', ParamIdPipe) id: number) {
     return this.peopleService.deletePeopleById(id);
+  } 
+
+
+  @ApiOperation({ summary: 'Add images for people entity' })
+  @ApiParam({ name: 'id', type: 'number', description: 'Person id' })
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        image: {
+          type: 'string',
+          format: 'binary',
+        },
+      },
+    },
+  })
+  @Post(':id')
+  @UseInterceptors(FileInterceptor('image'))
+  addImage(
+    @Param('id', ParamIdPipe) id: number,
+    @UploadedFile(
+      new ParseFilePipeBuilder()
+        .addFileTypeValidator({
+          fileType: 'image/jpeg ',
+        })
+        .build({ errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY }),
+    )
+    image: Express.Multer.File,
+  ) {
+    return this.peopleService.addImage(id, image);
   }
+
+  @ApiOperation({ summary: 'Delete people entity images' })
+  @ApiParam({ name: 'id', type: 'number', description: 'Image id' })
+  @Delete('image/:id')
+  deleteImage(@Param('id', ParamIdPipe) id: number) {
+    return this.peopleService.deleteImage(id);
+  }
+
 }
