@@ -28,10 +28,11 @@ import { ParamIdPipe } from 'src/people/pipes/param-id.pipe';
 import { QueryPagePipe } from 'src/people/pipes/query-page.pipe';
 import { People } from './people.entity';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { ImagesService } from 'src/images/images.service';
+import { TransformInterceptor } from '@src/utils/interceptors/transform.interceptor';
 
-@ApiTags('People')
 @Controller('people')
+@ApiTags('People')
+@UseInterceptors(TransformInterceptor)
 export class PeopleController {
   constructor(private readonly peopleService: PeopleService) {}
 
@@ -105,20 +106,12 @@ export class PeopleController {
     @UploadedFile(
       new ParseFilePipeBuilder()
         .addFileTypeValidator({
-          fileType: 'image/jpeg ',
+          fileType: 'image/jpeg',
         })
         .build({ errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY }),
     )
     image: Express.Multer.File,
   ) {
-    return this.peopleService.addImage(id, image);
+    return this.peopleService.addImageForPerson(id, image);
   }
-
-  @ApiOperation({ summary: 'Delete people entity images' })
-  @ApiParam({ name: 'id', type: 'number', description: 'Image id' })
-  @Delete('image/:id')
-  deleteImage(@Param('id', ParamIdPipe) id: number) {
-    return this.peopleService.deleteImage(id);
-  }
-
 }

@@ -1,7 +1,11 @@
-import { IsArray, IsEnum, IsNumberString, IsOptional, IsString } from 'class-validator';
+import {
+  IsEnum,
+  IsNumberString,
+  IsString,
+} from 'class-validator';
 import { E_PeopleGender } from '../people.enums';
 import { ApiProperty } from '@nestjs/swagger';
-import { People_Images } from 'src/images/images.entity';
+import { E_Films } from '@src/films/films.enums';
 
 export class CreatePeopleDTO {
   @ApiProperty({ example: 'John Doe', description: 'Person name' })
@@ -40,21 +44,23 @@ export class CreatePeopleDTO {
   @IsString()
   readonly homeworld: string;
 
-  @ApiProperty({ example: '' })
-  @IsString()
-  readonly films: string;
+  @ApiProperty({
+    example: ['The Phantom Menace'],
+  })
+  @IsEnum(E_Films, {each:true})
+  readonly films: E_Films[];
 
-  @ApiProperty({ example: '' })
-  @IsString()
-  readonly species: string;
+  @ApiProperty({ example: ['Human'] })
+  @IsString({each:true})
+  readonly species: string[];
 
-  @ApiProperty({ example: '' })
-  @IsString()
-  readonly vehicles: string;
+  @ApiProperty({ example: ["Sand Crawler", "T-16 skyhopper"] })
+  @IsString({each:true})
+  readonly vehicles: string[];
 
-  @ApiProperty({ example: '' })
-  @IsString()
-  readonly starships: string;
+  @ApiProperty({ example: ["Star Destroyer", "Sentinel-class landing craft"] })
+  @IsString({each:true})
+  readonly starships: string[];
 
   @ApiProperty({ example: 'http://' })
   @IsString()

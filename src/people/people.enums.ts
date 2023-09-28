@@ -5,14 +5,6 @@ export enum E_PeopleGender {
   Default = 'n/a',
 }
 
-export enum E_Films {
-    Episode1 = "The Phantom Menace",
-    Episode2 = "Attack of the Clones",
-    Episode3 = "Revenge of the Sith",
-    Episode4 = "A New Hope",
-    Episode5 = "The Empire Strikes Back",
-    Episode6 = "Return of the Jedi",
-}
 
 export enum E_Planets { // 60 
   Tatooine = 'Tatooine',

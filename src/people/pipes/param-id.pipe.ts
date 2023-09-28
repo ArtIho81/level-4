@@ -8,7 +8,7 @@ import {
 @Injectable()
 export class ParamIdPipe implements PipeTransform {
   transform(value: any, metadata: ArgumentMetadata) {
-    const id = +value;
+    const id = typeof value === 'string' ? +value : value;
     if (isNaN(id) || !Number.isInteger(id) || id < 1) {
       throw new BadRequestException();
     }

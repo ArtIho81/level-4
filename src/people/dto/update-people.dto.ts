@@ -10,8 +10,7 @@ import {
   IsString,
 } from 'class-validator';
 import { E_PeopleGender } from '../people.enums';
-import { People_Images } from 'src/images/images.entity';
-
+import { E_Films } from '@src/films/films.enums';
 
 export class UpdatePeopleDTO extends PartialType(CreatePeopleDTO) {
   @ApiProperty({
@@ -102,8 +101,8 @@ export class UpdatePeopleDTO extends PartialType(CreatePeopleDTO) {
     required: false,
   })
   @IsOptional()
-  @IsString()
-  readonly films?: string;
+  @IsEnum(E_Films, { each: true })
+  readonly films?: E_Films[];
 
   @ApiProperty({
     example: '',
@@ -112,7 +111,7 @@ export class UpdatePeopleDTO extends PartialType(CreatePeopleDTO) {
   })
   @IsOptional()
   @IsString()
-  readonly species?: string;
+  readonly species?: string[];
 
   @ApiProperty({
     example: '',
@@ -121,7 +120,7 @@ export class UpdatePeopleDTO extends PartialType(CreatePeopleDTO) {
   })
   @IsOptional()
   @IsString()
-  readonly vehicles?: string;
+  readonly vehicles?: string[];
 
   @ApiProperty({
     example: '',
@@ -130,7 +129,7 @@ export class UpdatePeopleDTO extends PartialType(CreatePeopleDTO) {
   })
   @IsOptional()
   @IsString()
-  readonly starships?: string;
+  readonly starships?: string[];
 
   @ApiProperty({
     example: '',

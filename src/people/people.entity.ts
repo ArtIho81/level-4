@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { People_Images } from 'src/images/images.entity';
+import { Films } from '../films/films.entity';
+import { Images } from '../images/images.entity';
 import {
   Entity,
   Column,
@@ -7,9 +8,19 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   OneToMany,
+  ManyToMany,
+  JoinTable,
+  ManyToOne,
+  Unique,
+  BeforeInsert,
 } from 'typeorm';
+import { Planets } from '@src/planets/planets.entity';
+import { Spaceships } from '@src/spaceships/spaceships.entity';
+import { Species } from '@src/species/species.entity';
+import { Vehicles } from '@src/vehicles/vehicles.entity';
 
 @Entity('people')
+@Unique(['name'])
 export class People {
   @ApiProperty({ example: 1, description: 'Unique identificator' })
   @PrimaryGeneratedColumn()
@@ -20,52 +31,58 @@ export class People {
   name: string;
 
   @ApiProperty()
-  @Column()
+  @Column({ default: '' })
   height: string;
 
   @ApiProperty()
-  @Column()
+  @Column({ default: '' })
   mass: string;
 
   @ApiProperty()
-  @Column()
+  @Column({ default: '' })
   hair_color: string;
 
   @ApiProperty()
-  @Column()
+  @Column({ default: '' })
   skin_color: string;
 
   @ApiProperty()
-  @Column()
+  @Column({ default: '' })
   eye_color: string;
 
   @ApiProperty()
-  @Column()
+  @Column({ default: '' })
   birth_year: string;
 
   @ApiProperty()
-  @Column()
+  @Column({ default: '' })
   gender: string;
 
   @ApiProperty()
-  @Column()
-  homeworld: string;
+  @ManyToOne(() => Planets, (planets) => planets.residents)
+  homeworld: Promise<Planets>;
+
+  @ManyToMany(() => Films, (films) => films.characters)
+  @JoinTable()
+  films: Promise<Films[]>;
 
   @ApiProperty()
-  @Column()
-  films: string;
+  @ManyToMany(() => Species, (species) => species.people)
+  @JoinTable()
+  species: Promise<Species[]>;
 
   @ApiProperty()
-  @Column()
-  species: string;
+  @ManyToMany(() => Vehicles, (vehicles) => vehicles.pilots)
+  @JoinTable()
+  vehicles:Promise<Vehicles[]>;
 
   @ApiProperty()
-  @Column()
-  vehicles: string;
+  @ManyToMany(() => Spaceships, (spaceships) => spaceships.pilots)
+  @JoinTable()
+  starships: Promise<Spaceships[]>;
 
-  @ApiProperty()
-  @Column()
-  starships: string;
+  @OneToMany(() => Images, (images) => images.people)
+  images: Promise<Images[]>;
 
   @ApiProperty()
   @CreateDateColumn({ type: 'timestamp' })
@@ -76,9 +93,6 @@ export class People {
   updatedAt: Date;
 
   @ApiProperty()
-  @Column()
+  @Column({ default: 'localhost:3000/people/' })
   url: string;
-
-  @OneToMany(type => People_Images, image => image.people)
-  images: People_Images[]
 }

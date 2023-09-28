@@ -3,14 +3,15 @@ import { PeopleController } from './people.controller';
 import { PeopleService } from './people.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { People } from './people.entity';
-import { People_Images } from '../images/images.entity';
-import { ImagesModule } from '../images/images.module';
+import { Images } from '../images/images.entity';
 import { ImagesService } from 'src/images/images.service';
+import { Films } from '../films/films.entity';
+import { UtilsService } from '@src/utils/utils.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([People, People_Images])],
+  imports: [TypeOrmModule.forFeature([People, Images, Films])],
   controllers: [PeopleController],
-  providers: [PeopleService, ImagesService],
-  exports:[TypeOrmModule]
+  providers: [PeopleService, ImagesService, UtilsService],
+  exports: [TypeOrmModule],
 })
 export class PeopleModule {}
